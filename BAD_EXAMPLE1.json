@@ -1,0 +1,18 @@
+[
+    {
+        "value": 0,
+        "parent": -1
+    },
+    {
+        "value": 1,
+        "parent": 0
+    },
+    {
+        "value": 2,
+        "parent": 1
+    },
+    {
+        "value": 0,
+        "parent": 2
+    }
+]

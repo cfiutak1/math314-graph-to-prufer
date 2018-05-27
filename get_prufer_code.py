@@ -4,16 +4,17 @@ import sys
 
 
 def get_vertex(vertices: list, value: int) -> Vertex:
-    """Function which returns a vertex object with value <value> from a list of
-    vertices. Assumes a well-formed list of vertices.
+    """Function which returns a vertex object with value <value> from a
+    list of vertices. Assumes a well-formed list of vertices.
 
     Args:
-        vertices (list): A list containing every vertex in a given tree.
+        vertices: A list containing every vertex in a given tree.
 
-        value (int): The value of the vertex.
+        value: The value of the vertex.
 
     Returns:
         Vertex: The vertex object corresponding to value.
+
     """
     for vertex in vertices:
         if vertex.value == value:
@@ -21,17 +22,18 @@ def get_vertex(vertices: list, value: int) -> Vertex:
 
 
 def construct_graph(tree_json: list) -> list:
-    """Function which constructs a list of vertices that represents the input
-    graph. Reads in all vertices in a provided JSON formatted data structure,
-    and connects them to their parent (if applicable).
+    """Function which constructs a list of vertices that represents the
+    input graph. Reads in all vertices in a provided JSON formatted
+    data structure, and connects them to their parent (if applicable).
 
     Args:
-        tree_json (list): A list of dictionaries which represents every vertex
-        in a tree.
+        tree_json: A list of dictionaries which represents
+        every vertex in a tree.
 
     Returns:
-        vertex_list (list): A list of Vertex objects that represents the given
-        JSON structure.
+        vertex_list: A list of Vertex objects that represents
+        the given JSON structure.
+
     """
 
     vertex_list = []
@@ -63,10 +65,13 @@ def get_leaves(vertex_list: list) -> list:
     """Function that returns a list of vertices that are leaves.
 
     Args:
-        vertex_list (list): A list of all Vertex objects in a given tree.
+        vertex_list: A list of all Vertex objects in a given
+        tree.
 
     Returns:
-        leaves_list (list): A list of Vertex objects that have no children.
+        leaves_list: A list of Vertex objects that have no
+    children.
+
     """
     leaves_list = []
 
@@ -81,18 +86,20 @@ def find_smallest_leaf(root: Vertex, leaf_list: list) -> Vertex:
     """Function that finds the smallest leaf in a list of leaves.
 
     Args:
-        root (Vertex): The root of the tree.
+        root: The root of the tree.
 
-        leaf_list (list): A list of all leaves in the tree.
+        leaf_list: A list of all leaves in the tree.
 
     Returns:
-        smallest_leaf (Vertex): The Vertex object with the smallest value.
+        smallest_leaf: The Vertex object with the smallest
+        value.
+
     """
-    min_so_far = 2 ** 64
+    min_so_far = False
     smallest_leaf = None
 
     for leaf in leaf_list:
-        if leaf.value < min_so_far and leaf != root:
+        if (leaf.value < int(min_so_far) and leaf != root) or (not min_so_far):
             min_so_far = leaf.value
             smallest_leaf = leaf
 
@@ -101,19 +108,21 @@ def find_smallest_leaf(root: Vertex, leaf_list: list) -> Vertex:
 
 def generate_prufer_code(root: Vertex, vertex_list: list) -> list:
     """Function that generates the prufer code of a given tree.
-    
-    Args:
-        root (Vertex): The root of the tree.
 
-        vertex_list (list): A representation of a tree with a list of Vertex
-        objects.
+    Args:
+        root: The root of the tree.
+
+        vertex_list: A representation of a tree with a list of
+        Vertex objects.
 
     Returns:
-        prufer_code (list): A list containing the prufer code of a tree.
+        prufer_code: A list containing the prufer code of a
+        tree.
+
     """
     prufer_code = []
 
-    while find_smallest_leaf(root, vertex_list) is not None and len(vertex_list) > 2:
+    while len(vertex_list) > 2:
         # Determine the leaf to prune and its parent
         delete = find_smallest_leaf(root, get_leaves(vertex_list))
         parent = delete.parent
@@ -149,6 +158,8 @@ def main():
     if len(tree_json) < 3:
         print("There is no prufer code for this graph")
         return
+    # EPPO: Technically, the above condition is incorrect when
+    # len(tree_json)==2.
 
     # Construct the graph
     vertex_list = construct_graph(tree_json)

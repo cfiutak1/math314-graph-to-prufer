@@ -3,12 +3,10 @@ class Vertex:
     def __init__(self, value):
         self.value = value
         self.children = []
-        self.leaf = True
         self.parent = None
 
     def add_child(self, child):
         self.children.append(child)
-        self.leaf = False
 
     def set_parent(self, parent):
         self.parent = parent
@@ -16,15 +14,18 @@ class Vertex:
     def remove_child(self, value):
         # Iterates through all the children to remove the specified child
         for child in self.children:
-            if child.value == value:
+            if child.value == value:  # EPPO: Seems like this will
+                                      # take quite a lot of time for
+                                      # very large trees.
                 self.children.remove(child)
+                # EPPO: Maybe also return to kill above objection?
 
-        # Sets the is_leaf flag to true if there are no more children
-        if len(self.children) == 0:
-            self.leaf = True
+                return True
+
+        return False
 
     def is_leaf(self):
-        return self.leaf
+        return len(self.children) == 0
 
     def __str__(self):
         if self.leaf:
